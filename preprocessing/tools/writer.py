@@ -1,6 +1,6 @@
 import os
 import SimpleITK as itk
-from utils.paths_dirs_stuff import create_path
+from .paths_dirs_stuff import create_path
 
 def write_nifti_from_vol(vol_array, itk_orig, itk_space, itk_dir, absolute_name):
     '''
