@@ -10,10 +10,14 @@
 - To speed up the cropping, simple thresholding was tested so we don't need TotalSeg anymore!
 - The threshold-based cropped data were used for prediction (fold0) to compare their results against the TotalSeg cropped-based model (make sure cropping with Thr is correct).
 - The comparison resulted in similar results when using MetricsReloaded. Conclusion: Using threshold-based cropping results in similar Dice as TotalSeg in the inference phase.
+- UMamba was used for training the whole dataset (all_fold)
 
 ## TODO:
 - FP reduction?
 - Predicted mask postprocessing?
+- MedNEXT training on fold1 and all data
+- Ensemble [ResENC&UMamba&MedNEXT]
+- Split FDG and PSMA data for ResENC model 
 
 
  
