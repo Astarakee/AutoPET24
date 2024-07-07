@@ -6,16 +6,18 @@ from tools.json_pickle_stuff import read_pickle
 from tools.paths_dirs_stuff import path_contents_pattern
 
 
-log_path = "/home/mehdi/Data/AutoPET24/postprocessing"
+log_path = "/home/mehdi/Data/AutoPET24/postprocessing/data_stats"
 log_files = path_contents_pattern(log_path, ".pkl")
 
 tumor_size = []
 min_ct = []
 max_ct = []
 median_ct = []
+mean_ct = []
 min_pt = []
 max_pt = []
 median_pt = []
+mean_pt = []
 for ix, log in enumerate(log_files):
     log_abs_path = os.path.join(log_path, log)
     log_dict = read_pickle(log_abs_path)
@@ -29,6 +31,8 @@ for ix, log in enumerate(log_files):
             min_pt.append(vals['min_pt_vals'])
             max_pt.append(vals['max_pt_vals'])
             median_pt.append(vals['med_pt_vals'])
+            mean_ct.append(vals['mean_ct_vals'])
+            mean_pt.append(vals['mean_pt_vals'])
 
 def flatten_nested_list(mylist):
     return [x for xx in mylist for x in xx]
@@ -40,6 +44,8 @@ median_ct_arr = np.array(flatten_nested_list(median_ct))
 min_pt_arr = np.array(flatten_nested_list(min_pt))
 max_pt_arr = np.array(flatten_nested_list(max_pt))
 median_pt_arr = np.array(flatten_nested_list(median_pt))
+mean_ct_arr = np.array(flatten_nested_list(mean_ct))
+mean_pt_arr = np.array(flatten_nested_list(mean_pt))
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -82,8 +88,14 @@ ax.set_title("Distribution of tumor size")
 ax.set_xlabel("number of occupied voxels")
 ax.set_ylabel("Frequenct")
 ax.legend(['<10', '10<x<20', '20<x<50', '50<x<100', '100<x<500', '500<x<1000', 'x>1000'])
+# plt.savefig('/home/mehdi/Data/AutoPET24/postprocessing/data_stats/histogram.png')
 plt.show()
 
-mean_min_ct_g1 = np.mean(min_ct_arr[ind1])
-min_min_ct_g1 = np.min(min_ct_arr[ind1])
-max_min_ct_g1 = np.max(min_ct_arr[ind1])
+
+mean_min_pt_g1 = np.mean(min_pt_arr[ind1])
+min_min_ptg1 = np.min(min_pt_arr[ind1])
+
+mean_mean_pt_g1 = np.mean(mean_pt_arr[ind1])
+min_mean_pt_g1 = np.min(mean_pt_arr[ind1])
+perntile1_mean_pt_g1 = np.percentile(mean_pt_arr[ind1],1)
+print("percentile 1 for PET average intensity is {:.4f}".format(perntile1_mean_pt_g1))
