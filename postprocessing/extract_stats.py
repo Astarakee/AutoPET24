@@ -34,6 +34,8 @@ def get_lesion_stats(data_path):
         component_labels = [x for x in stats.GetLabels()]
         n_components = len(component_labels)
         tmp_stats['n_components'] = n_components
+        mean_ct_vals = []
+        mean_pt_vals = []
         min_ct_vals = []
         max_ct_vals = []
         min_pt_vals = []
@@ -49,12 +51,16 @@ def get_lesion_stats(data_path):
             pt_target_vol = binary_comp_array * pt_array
             ct_non_zeros = ct_target_vol[np.where(ct_target_vol != 0)]
             pt_non_zeros = pt_target_vol[np.where(pt_target_vol != 0)]
+            mean_int_ct = np.mean(ct_non_zeros)
+            mean_int_pt = np.mean(pt_non_zeros)
             max_int_ct = np.max(ct_non_zeros)
             min_int_ct = np.min(ct_non_zeros)
             med_int_ct = np.median(ct_non_zeros)
             max_int_pt = np.max(pt_non_zeros)
             min_int_pt = np.min(pt_non_zeros)
             med_int_pt = np.median(pt_non_zeros)
+            mean_ct_vals.append(mean_int_ct)
+            mean_pt_vals.append(mean_int_pt)
             min_ct_vals.append(min_int_ct)
             max_ct_vals.append(max_int_ct)
             med_ct_vals.append(med_int_ct)
@@ -70,6 +76,8 @@ def get_lesion_stats(data_path):
         tmp_stats['min_pt_vals'] = min_pt_vals
         tmp_stats['max_pt_vals'] = max_pt_vals
         tmp_stats['med_pt_vals'] = med_pt_vals
+        tmp_stats['mean_ct_vals'] = mean_ct_vals
+        tmp_stats['mean_pt_vals'] = mean_pt_vals
         dataset_stats[case_name] = tmp_stats
 
     pkl_name = "./autopet24_lesion_stats_OrigData.pkl"
