@@ -36,8 +36,8 @@ for ix, case in enumerate(label_files):
     case_path_totalseg = os.path.join(totalseg_path, case_name)
     l_clavicle_path = os.path.join(case_path_totalseg, 'clavicula_left.nii.gz')
     r_clavicle_path = os.path.join(case_path_totalseg, 'clavicula_right.nii.gz')
-    l_rib_path = os.path.join(case_path_totalseg, 'rib_left_12.nii.gz')
-    r_rib_path = os.path.join(case_path_totalseg, 'rib_right_12.nii.gz')
+    l_rib_path = os.path.join(case_path_totalseg, 'rib_left_11.nii.gz')
+    r_rib_path = os.path.join(case_path_totalseg, 'rib_right_11.nii.gz')
 
     ct_array, ct_itk, _, ct_spacing, ct_origin, ct_direction = read_nifti(case_path_ct)
     pt_array, _, _, _, _, _ = read_nifti(case_path_pt)
@@ -48,31 +48,19 @@ for ix, case in enumerate(label_files):
     r_rib_array, _, _, _, _, _ = read_nifti(r_rib_path)
     array_shape = ct_array.shape
     clavicle_array = l_cl_array+r_cl_array
-    rib12_array = l_rib_array+r_rib_array
+    rib11_array = l_rib_array+r_rib_array
     clavicle_array[clavicle_array!=0] = 1
-    rib12_array[rib12_array!=0] = 1
-
+    rib11_array[rib11_array!=0] = 1
     ax_ind_upper, _, _ = np.where(clavicle_array==1)
-    ax_ind_lower, _, _ = np.where(rib12_array==1)
-    if len(ax_ind_lower)==0:
-        l_rib_path = os.path.join(case_path_totalseg, 'rib_left_11.nii.gz')
-        r_rib_path = os.path.join(case_path_totalseg, 'rib_right_11.nii.gz')
-        l_rib_array, _, _, _, _, _ = read_nifti(l_rib_path)
-        r_rib_array, _, _, _, _, _ = read_nifti(r_rib_path)
-        rib11_array = l_rib_array + r_rib_array
-        rib11_array[rib11_array != 0] = 1
-        ax_ind_lower, _, _ = np.where(rib11_array == 1)
+    ax_ind_lower, _, _ = np.where(rib11_array==1)
+    min_ax_slice_lower = np.min(ax_ind_lower)
+    min_ax_slice_upper = np.min(ax_ind_upper)
+    min_ax_marginal_lower = min_ax_slice_lower-axial_margin
+    min_ax_marginal_upper = min_ax_slice_upper+axial_margin
 
-
-
-    min_ax_slice_lower = np.min(ax_ind_upper)
-    min_ax_slice_upper = np.min(ax_ind_lower)
-    min_ax_marginal_lower = min_ax_slice_lower+axial_margin
-    min_ax_marginal_upper = min_ax_slice_upper-axial_margin
-
-    hn_ct_arr = ct_array[min_ax_marginal_upper:min_ax_marginal_lower,:,:]
-    hn_pt_arr = pt_array[min_ax_marginal_upper:min_ax_marginal_lower,:,:]
-    hn_sg_arr = sg_array[min_ax_marginal_upper:min_ax_marginal_lower,:,:]
+    hn_ct_arr = ct_array[min_ax_marginal_lower:min_ax_marginal_upper,:,:]
+    hn_pt_arr = pt_array[min_ax_marginal_lower:min_ax_marginal_upper,:,:]
+    hn_sg_arr = sg_array[min_ax_marginal_lower:min_ax_marginal_upper,:,:]
 
     ct_save_abs_path = os.path.join(write_path_images, case_name_ct)
     pt_save_abs_path = os.path.join(write_path_images, case_name_pt)
