@@ -1,5 +1,16 @@
 # AutoPET24
 
+## Run Docker
+- Build the docker image:
+```bash
+docker build . -t autopet:v1
+```
+- Run an instance:
+```bash
+docker run --rm --gpus all --network none --memory="32g" -v <in>:/input/ -v <out>:/output/ --shm-size 4g autopet:v1
+```
+- Note: "input" dir should contains nifti files in Decathlon format.
+- Execution time: 5second/subject for preparation + 60second/subject for 5folds ensembling
 
 ## Brief Description - Summary of experiments:
 
