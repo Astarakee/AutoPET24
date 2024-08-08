@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import os
 import numpy as np
 import SimpleITK as itk
@@ -6,19 +5,12 @@ from copy import deepcopy
 from tools.sitk_stuff import read_nifti
 from tools.writer import write_nifti_from_vol
 from tools.json_pickle_stuff import write_pickle
+from tools.preprocess import windowing_intensity
 from tools.croping_stuff import bbox_coordinate, creat_bbox
 from tools.paths_dirs_stuff import path_contents_pattern, create_path
-=======
->>>>>>> 4123405ede8c12a637c8e95f3022964d7867d446
 
-
-def windowing_intensity(img_array, min_bound, max_bound):
-    
-    img_array[img_array>max_bound] = max_bound
-    img_array[img_array<min_bound] = min_bound
-<<<<<<< HEAD
-    return img_array
-
+in_path = '/home/mehdi/Data/AutoPET24/TestingPhase'
+out_path = '/home/mehdi/Data/AutoPET24/Testing_preds'
 
 def run_prepare(in_path, out_path):
     nnunet_in_path = os.path.join(out_path, 'imagesTr')
@@ -34,7 +26,7 @@ def run_prepare(in_path, out_path):
     min_ct_int = -800
     max_ct_int = 800
     for ix, _ in enumerate(ct_files):
-        print('\t'*2, 'preparing case {} out of {}'.format(ix + 1, n_subject))
+        print('working on case {} out of {}'.format(ix + 1, n_subject))
         case_ct = ct_files[ix]
         case_pt = pt_files[ix]
         subject_name = case_ct.split('_0000.nii.gz')[0]
@@ -88,6 +80,3 @@ def run_prepare(in_path, out_path):
         write_nifti_from_vol(cropped_pt, ct_origin, ct_spacing, ct_direction, cropped_img_path_pt)
 
     return None
-=======
-    return img_array
->>>>>>> 4123405ede8c12a637c8e95f3022964d7867d446
