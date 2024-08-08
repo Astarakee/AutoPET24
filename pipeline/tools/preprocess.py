@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import os
 import numpy as np
 import SimpleITK as itk
@@ -8,15 +7,13 @@ from tools.writer import write_nifti_from_vol
 from tools.json_pickle_stuff import write_pickle
 from tools.croping_stuff import bbox_coordinate, creat_bbox
 from tools.paths_dirs_stuff import path_contents_pattern, create_path
-=======
->>>>>>> 4123405ede8c12a637c8e95f3022964d7867d446
+
 
 
 def windowing_intensity(img_array, min_bound, max_bound):
     
     img_array[img_array>max_bound] = max_bound
     img_array[img_array<min_bound] = min_bound
-<<<<<<< HEAD
     return img_array
 
 
@@ -88,6 +85,3 @@ def run_prepare(in_path, out_path):
         write_nifti_from_vol(cropped_pt, ct_origin, ct_spacing, ct_direction, cropped_img_path_pt)
 
     return None
-=======
-    return img_array
->>>>>>> 4123405ede8c12a637c8e95f3022964d7867d446
