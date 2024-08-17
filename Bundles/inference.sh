@@ -6,7 +6,7 @@ PYTHONPATH=$BUNDLE
 /opt/conda/envs/MONAI/bin/python -m monai.bundle run inference \
     --bundle_root "$BUNDLE" \
     --data_dir "/input" \
-    --output-dir "/opt" \
+    --output-dir "/output" \
     --meta_file "$BUNDLE/configs/metadata.json" \
     --config_file  "['$BUNDLE/configs/DenseNet.yaml','$BUNDLE/override.yaml','$BUNDLE/configs/inference.yaml']"
 

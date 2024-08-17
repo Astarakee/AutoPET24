@@ -68,5 +68,5 @@ if __name__ == "__main__":
         "FDG": "/opt/Dataset704_AutoPET24CropFDG/nnUNetTrainer__nnUNetResEncUNetLPlans__3d_fullres",
         "PSMA": "/opt/Dataset704_AutoPET24CroPSMA/nnUNetTrainer__nnUNetResEncUNetLPlans__3d_fullres"
     }
-    output_fodler = "/output"
-    perform_Tracer_aware_Segmentation('/opt/PET_Tracer_predictions.csv',model_mapping, model_folders,output_folder)
+    output_folder = "/output"
+    perform_Tracer_aware_Segmentation('/output/PET_Tracer_predictions.csv',model_mapping, model_folders,output_folder)
