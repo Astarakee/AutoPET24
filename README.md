@@ -7,9 +7,13 @@ docker build . -t autopet:v1
 ```
 - Run an instance:
 ```bash
-docker run --rm --gpus all --network none --memory="32g" -v <in>:/input/ -v <out>:/output/ --shm-size 4g autopet:v1
+docker run --rm --gpus all --network none --memory="30g" -v <>:/input -v <>:/output --shm-size 4g autopet:v1
 ```
-- Note: "input" dir should contains nifti files in Decathlon format.
+```bash
+input_dir_structure: "/input/images/ct/<ctUID.mha>" & "/input/images/pt/<ptUID.mha>"
+output_dir_structure: "/output/images/automated-petct-lesion-segmentation/<ctUID.mha>" & "/output/data-centric-model.json"
+```
+
 - Execution time: 5second/subject for preparation + 60second/subject for 5folds ensembling
 
 ## Brief Description - Summary of experiments:
