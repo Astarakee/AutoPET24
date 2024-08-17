@@ -1,6 +1,4 @@
-import os
 import SimpleITK as itk
-from .paths_dirs_stuff import create_path
 
 def write_nifti_from_vol(vol_array, itk_orig, itk_space, itk_dir, absolute_name):
     '''
@@ -73,4 +71,12 @@ def write_nifti_from_itk(itk_img, itk_orig, itk_space, itk_dir, absolute_name):
     fileName = absolute_name+'.nii.gz'     
     itk.WriteImage(itk_img, fileName)
     
+    return None
+
+def write_mha(np_array, itk_spacing, itk_origin, itk_direction, write_path):
+    temp_itk = itk.GetImageFromArray(np_array)
+    temp_itk.SetSpacing(itk_spacing)
+    temp_itk.SetOrigin(itk_origin)
+    temp_itk.SetDirection(itk_direction)
+    itk.WriteImage(temp_itk, write_path, useCompression=True)
     return None

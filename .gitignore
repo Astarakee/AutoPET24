@@ -5,11 +5,13 @@
 *.pdf
 *.pyc
 *.mha
+*.mhd
 *.pth
 *.pt
 *.png
 *.jpg
 *.tar.gz
 *.gz
+*.zip
 *.ipynb_checkpoints
 .idea/
