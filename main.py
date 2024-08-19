@@ -20,7 +20,7 @@ def main():
     run_prepare(in_path, path_prepared_data)
     nnunet_path_in = os.path.join(path_prepared_data, 'imagesTs')
     print('-' * 5, 'nnunet prediction')
-    os.system('nnUNetv2_predict -i %s -o %s -d 704 -c 3d_fullres -p nnUNetResEncUNetLPlans' % (nnunet_path_in, nnunet_path_out))
+    os.system('nnUNetv2_predict -i %s -o %s -d 704 -c 3d_fullres -p nnUNetResEncUNetLPlans -f 0 1 2' % (nnunet_path_in, nnunet_path_out))
     print('-' * 5, 'postprocessing predicted masks')
     run_fullres(out_path, path_prepared_data, nnunet_path_out)
     save_datacentric(out_path, False)
