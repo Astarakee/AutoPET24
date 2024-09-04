@@ -4,8 +4,9 @@ import torch
 from   nnunetv2.inference.predict_from_raw_data import nnUNetPredictor
 from pathlib import Path
 import os
+import click
 
-def perform_Tracer_aware_Segmentation(csv_file,model_mapping, model_folders,output_folder):
+def perform_Tracer_aware_Segmentation(csv_file,model_mapping, model_folders,output_folder, preprocess_folder):
 
     step_size = 0.5
     disable_tta = False
@@ -25,9 +26,10 @@ def perform_Tracer_aware_Segmentation(csv_file,model_mapping, model_folders,outp
 
 
     df = pd.read_csv(csv_file,header=None,names=["Filename","Class"])
-
+    print(df)
+    print(os.listdir(preprocess_folder))
     for row in df.iterrows():
-        matching_files = ['/input/'+filename for filename in os.listdir('/input') if filename.startswith(Path(row[1].Filename).name[:-len("_0000.nii.gz")])]
+        matching_files = [str(Path(preprocess_folder).joinpath(filename)) for filename in os.listdir(preprocess_folder) if filename.startswith(Path(row[1].Filename).name[:-len("_0000.nii.gz")])]
 
         matching_files.sort()
         inputs[model_mapping[(row[1].Class)]].append(matching_files)
@@ -36,6 +38,7 @@ def perform_Tracer_aware_Segmentation(csv_file,model_mapping, model_folders,outp
     torch.set_num_interop_threads(1)
     device = torch.device('cuda')
 
+    print(inputs)
     for val in list(model_mapping.values()):
 
 
@@ -57,9 +60,11 @@ def perform_Tracer_aware_Segmentation(csv_file,model_mapping, model_folders,outp
                                     folder_with_segs_from_prev_stage=prev_stage_predictions,
                                     num_parts=1, part_id=0)
 
-
-
-if __name__ == "__main__":
+@click.command()
+@click.option("--pet-tracer-prediction-table", type=str, required=True)
+@click.option("--output-nifti-folder", type=str, required=True)
+@click.option("--preprocess-folder", type=str, required=True)
+def main(pet_tracer_prediction_table, output_nifti_folder,preprocess_folder):
     model_mapping = {
         0: "FDG",
         1: "PSMA"
@@ -68,5 +73,9 @@ if __name__ == "__main__":
         "FDG": "/opt/Dataset704_AutoPET24CropFDG/nnUNetTrainer__nnUNetResEncUNetLPlans__3d_fullres",
         "PSMA": "/opt/Dataset704_AutoPET24CroPSMA/nnUNetTrainer__nnUNetResEncUNetLPlans__3d_fullres"
     }
-    output_folder = "/output"
-    perform_Tracer_aware_Segmentation('/output/PET_Tracer_predictions.csv',model_mapping, model_folders,output_folder)
+    Path(output_nifti_folder).mkdir(exist_ok=True, parents=True)
+    perform_Tracer_aware_Segmentation(pet_tracer_prediction_table, model_mapping, model_folders,
+                                      output_nifti_folder,preprocess_folder)
+
+if __name__ == "__main__":
+  main()
